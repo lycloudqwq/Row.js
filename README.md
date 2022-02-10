@@ -1,2 +1,8 @@
 # Row.js
-Personal use script to mark rows as read
+
+## Function
+- [ ] Gist Read
+- [ ] Gist Write
+- [ ] remoteContent json
+- [ ] querySelector
+- [ ] addEventListener
