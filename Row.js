@@ -8,11 +8,12 @@
 (() => {
 
     const PA_TOKEN = "ghp_*****"
+    const GIST_USER = "lycloudqwq"
     const GIST_ID = "e259cb1aae0b7b129b29f762c42bec82"
-    const GIST_FILE_NAME = "row.json"
+    const GIST_FILE = "row.json"
 
     // Gist Read
-    let response = await fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + GIST_FILE_NAME)
+    let response = await fetch("https://gist.githubusercontent.com/" + GIST_USER + "/" + GIST_ID + "/raw/" + GIST_FILE)
     let text = await response.text()
     let remoteContent = JSON.parse(text)
 
@@ -52,14 +53,14 @@
 
             // Gist Write
             fetch("https://api.github.com/gists/" + GIST_ID, {
-                method: "PATCG",
+                method: "PATCH",
                 headers: {
-                    "Authorization": PA_TOKEN
+                    "Authorization": "token " + PA_TOKEN
                 },
                 body: JSON.stringify({
                     files: {
-                        GIST_FILE_NAME: {
-                            content: remoteContent
+                        [GIST_FILE]: {
+                            content: JSON.stringify(remoteContent)
                         }
                     }
                 })
