@@ -43,12 +43,12 @@
                 elementGrey[j].style.background = "#ccc"
             }
 
-            // remoteContent Unshift & Pop
+            // remoteContent Push & Splice
             if (remoteContent["keylol.com"].includes(theadId) === false) {
-                remoteContent["keylol.com"].unshift(theadId)
+                remoteContent["keylol.com"].push(theadId)
             }
-            if (remoteContent.length > 200) {
-                remoteContent["keylol.com"].pop()
+            if (remoteContent.length > 400) {
+                remoteContent["keylol.com"].splice(0, 200)
             }
 
             // Gist Write
