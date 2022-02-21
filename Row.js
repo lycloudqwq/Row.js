@@ -3,7 +3,7 @@
 // @version      0.4
 // @author       lycloud
 // @match        https://keylol.com/f*
-// @match        https://www.chiphell.com/forum-*
+// @match        https://www.chiphell.com/forum.php?*
 // @description  Personal use script to mark rows as read
 // ==/UserScript==
 
