@@ -29,11 +29,11 @@
     let text = await response.text()
 
     let remoteContent = JSON.parse(JSON.parse(text).files[GIST_FILE].content)
-    let row = document.querySelectorAll(SITE_SELECTOR[SITE])
+    let rows = document.querySelectorAll(SITE_SELECTOR[SITE])
 
-    for (let i = 0; i < row.length; i++) {
-        let rowId = row[i].href.substring(row[i].href.lastIndexOf("/") + 1)
-        let rowElement = row[i].closest("tr").children
+    for (const row of rows) {
+        let rowId = row.href.substring(row.href.lastIndexOf("/") + 1)
+        let rowElement = row.closest("tr").children
 
         // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
@@ -42,7 +42,7 @@
             }
         } else {
             // addEventListener for unread rows
-            row[i].addEventListener("mousedown", () => {
+            row.addEventListener("mousedown", () => {
                 // Mark as read
                 for (let j = 0; j < rowElement.length; j++) {
                     rowElement[j].style.background = "#ccc"
