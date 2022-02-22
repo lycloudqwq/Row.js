@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.4
+// @version      0.5
 // @author       lycloud
 // @match        https://keylol.com/f*
 // @match        https://www.chiphell.com/forum.php?*
@@ -30,24 +30,25 @@
 
     let remoteContent = JSON.parse(JSON.parse(text).files[GIST_FILE].content)
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
-    const color = (rowElement) => {
+
+    const color = (index) => {
+        let rowElement = row[index].closest("tr").children
         for (const element of rowElement) {
             element.style.background = "#ccc"
         }
+
     }
 
-    for (let index = 0; index < rowElement.length; index++) {
-        let rowId = row[index].href.substring(row[index].href.lastIndexOf("/") + 1)
-        let rowElement = row[index].closest("tr").children
+    for (let index = 0; index < row.length; index++) {
 
+        let rowId = row[index].href.substring(row[index].href.lastIndexOf("/") + 1)
         // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
-            color(rowElement)
+            color(index)
         } else {
             // addEventListener for unread rows
             row[index].addEventListener("mousedown", () => {
-
-                color(rowElement)
+                color(index)
                 // Control the size of remoteContent
                 remoteContent[SITE].push(rowId)
                 if (remoteContent[SITE].length > 400) {

@@ -9,7 +9,7 @@
 
 ## Progress
 - [x] Prototype for Keylol
-- [ ] Code cleanup
+- [x] Code cleanup
 - [ ] Adaptation for other sites
 - [ ] Add convenient function
 - [ ] Release
