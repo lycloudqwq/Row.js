@@ -29,23 +29,23 @@
     let text = await response.text()
 
     let remoteContent = JSON.parse(JSON.parse(text).files[GIST_FILE].content)
-    let rows = document.querySelectorAll(SITE_SELECTOR[SITE])
+    let row = document.querySelectorAll(SITE_SELECTOR[SITE])
     const color = (rowElement) => {
-        for (let index = 0; index < rowElement.length; index++) {
-            rowElement[index].style.background = "#ccc"
+        for (const element of rowElement) {
+            element.style.background = "#ccc"
         }
     }
 
-    for (const row of rows) {
-        let rowId = row.href.substring(row.href.lastIndexOf("/") + 1)
-        let rowElement = row.closest("tr").children
+    for (let index = 0; index < rowElement.length; index++) {
+        let rowId = row[index].href.substring(row[index].href.lastIndexOf("/") + 1)
+        let rowElement = row[index].closest("tr").children
 
         // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
             color(rowElement)
         } else {
             // addEventListener for unread rows
-            row.addEventListener("mousedown", () => {
+            row[index].addEventListener("mousedown", () => {
 
                 color(rowElement)
                 // Control the size of remoteContent
