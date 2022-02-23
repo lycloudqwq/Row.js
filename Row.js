@@ -41,7 +41,7 @@
 
     for (let index = 0; index < row.length; index++) {
 
-        let rowId = row[index].href.substring(row[index].href.lastIndexOf("/") + 1)
+        let rowId = row[index].href.match(/\d+/)[0]
         // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
             color(index)
