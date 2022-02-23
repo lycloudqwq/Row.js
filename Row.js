@@ -17,8 +17,12 @@
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
         "www.chiphell.com": ".s",
-
+        "pterclub.com": ".torrentname a[title]",
+        "www.beitai.pt": ".torrentname a[title]",
+        "www.pthome.net": ".torrentname a[title]",
+        "pt.btschool.club": ".torrentname a[title]",
     }
+    const SITE_PT = ["pterclub.com", "www.beitai.pt", "www.pthome.net", "pt.btschool.club"]
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
@@ -36,7 +40,12 @@
         for (const element of rowElement) {
             element.style.background = "#ccc"
         }
-
+        // PT sites only to color the outer tr
+        if (SITE_PT.includes(SITE)) {
+            for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
+                element.style.background = "#ccc"
+            }
+        }
     }
 
     for (let index = 0; index < row.length; index++) {
