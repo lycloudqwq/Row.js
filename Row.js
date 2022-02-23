@@ -1,9 +1,14 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.5
+// @version      0.6
 // @author       lycloud
 // @match        https://keylol.com/f*
 // @match        https://www.chiphell.com/forum.php?*
+// @match        https://pterclub.com/torrents.php*
+// @match        https://www.beitai.pt/torrents.php
+// @match        https://www.pthome.net/torrents.php*
+// @match        https://pt.btschool.club/torrents.php*
+// @run-at       document-end
 // @description  Personal use script to mark rows as read
 // ==/UserScript==
 
