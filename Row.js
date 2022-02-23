@@ -5,7 +5,7 @@
 // @match        https://keylol.com/f*
 // @match        https://www.chiphell.com/forum.php?*
 // @match        https://pterclub.com/torrents.php*
-// @match        https://www.beitai.pt/torrents.php
+// @match        https://www.beitai.pt/torrents.php*
 // @match        https://www.pthome.net/torrents.php*
 // @match        https://pt.btschool.club/torrents.php*
 // @run-at       document-end
