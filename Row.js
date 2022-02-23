@@ -27,7 +27,6 @@
         "www.pthome.net": ".torrentname a[title]",
         "pt.btschool.club": ".torrentname a[title]",
     }
-    const SITE_PT = ["pterclub.com", "www.beitai.pt", "www.pthome.net", "pt.btschool.club"]
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
@@ -46,10 +45,8 @@
             element.style.background = "#ccc"
         }
         // PT sites only to color the outer tr
-        if (SITE_PT.includes(SITE)) {
-            for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
-                element.style.background = "#ccc"
-            }
+        for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
+            element.style.background = "#ccc"
         }
     }
 
