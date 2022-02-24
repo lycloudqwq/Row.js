@@ -48,7 +48,7 @@
             for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
                 element.style.background = "#ccc"
             }
-        } catch (error) { }
+        } catch { }
     }
 
     for (let index = 0; index < row.length; index++) {
