@@ -40,14 +40,15 @@
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
 
     const color = (index) => {
-        let rowElement = row[index].closest("tr").children
-        for (const element of rowElement) {
+        for (const element of row[index].closest("tr").children) {
             element.style.background = "#ccc"
         }
         // PT sites only to color the outer tr
-        for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
-            element.style.background = "#ccc"
-        }
+        try {
+            for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
+                element.style.background = "#ccc"
+            }
+        } catch (error) { }
     }
 
     for (let index = 0; index < row.length; index++) {
