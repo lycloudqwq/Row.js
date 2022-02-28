@@ -30,13 +30,9 @@
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
-        headers: {
-            "Authorization": "token " + PA_TOKEN
-        }
+        headers: { "Authorization": "token " + PA_TOKEN }
     })
-    let text = await response.text()
-
-    let remoteContent = JSON.parse(JSON.parse(text).files[GIST_FILE].content)
+    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
 
     const color = (index) => {
