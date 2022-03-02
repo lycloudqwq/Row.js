@@ -17,7 +17,6 @@
     const PA_TOKEN = "ghp_******"
     const GIST_ID = "e259cb1aae0b7b129b29f762c42bec82"
     const GIST_FILE = "row.json"
-
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
@@ -49,8 +48,8 @@
 
     for (let index = 0; index < row.length; index++) {
         let rowId = row[index].href.match(/\d+/)[0]
-        // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
+            // Mark read rows in Gist storage
             color(index)
         } else {
             // addEventListener for unread rows
