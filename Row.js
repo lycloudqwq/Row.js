@@ -39,8 +39,8 @@
         for (const element of row[index].closest("tr").children) {
             element.style.background = "#ccc"
         }
+        // PT sites only to color the outer tr
         if (document.querySelector(".torrents")) {
-            // PT sites only to color the outer tr
             for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
                 element.style.background = "#ccc"
             }
@@ -48,7 +48,6 @@
     }
 
     for (let index = 0; index < row.length; index++) {
-
         let rowId = row[index].href.match(/\d+/)[0]
         // Mark read rows in Gist storage
         if (remoteContent[SITE].includes(rowId)) {
@@ -65,9 +64,7 @@
                 // Gist Write
                 fetch("https://api.github.com/gists/" + GIST_ID, {
                     method: "PATCH",
-                    headers: {
-                        "Authorization": "token " + PA_TOKEN
-                    },
+                    headers: { "Authorization": "token " + PA_TOKEN },
                     body: JSON.stringify({
                         files: {
                             [GIST_FILE]: {
@@ -76,7 +73,7 @@
                         }
                     })
                 })
-            })
+            }, { once: true })
         }
     }
 
