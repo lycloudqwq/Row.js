@@ -39,12 +39,12 @@
         for (const element of row[index].closest("tr").children) {
             element.style.background = "#ccc"
         }
-        // PT sites only to color the outer tr
-        try {
+        if (document.querySelector(".torrents")) {
+            // PT sites only to color the outer tr
             for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
                 element.style.background = "#ccc"
             }
-        } catch { }
+        }
     }
 
     for (let index = 0; index < row.length; index++) {
