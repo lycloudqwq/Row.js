@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.6
+// @version      0.7
 // @author       lycloud
 // @match        https://keylol.com/f*
-// @match        https://share.dmhy.org*
+// @match        https://share.dmhy.org/*
 // @match        https://www.chiphell.com/forum.php?*
 // @match        https://pterclub.com/torrents.php*
 // @match        https://www.beitai.pt/torrents.php*
@@ -21,8 +21,8 @@
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
-        "share.dmhy.org": ".title > a",
         "www.chiphell.com": ".s",
+        "share.dmhy.org": ".title > a",
         "pterclub.com": ".torrentname a[title]",
         "www.beitai.pt": ".torrentname a[title]",
         "www.pthome.net": ".torrentname a[title]",
@@ -86,5 +86,4 @@
             }, { once: true })
         }
     }
-
 })();
