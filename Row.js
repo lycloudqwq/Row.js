@@ -27,13 +27,7 @@
         "pt.btschool.club": ".torrentname a[title]",
     }
 
-    // Gist Read
-    let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
-        headers: { "Authorization": "token " + PA_TOKEN }
-    })
-    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
-
     const color = (index) => {
         for (const element of row[index].closest("tr").children) {
             element.style.background = "#ccc"
@@ -45,6 +39,12 @@
             }
         }
     }
+
+    // Gist Read
+    let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
+        headers: { "Authorization": "token " + PA_TOKEN }
+    })
+    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
 
     for (let index = 0; index < row.length; index++) {
         let rowId = row[index].href.match(/\d+/)[0]
