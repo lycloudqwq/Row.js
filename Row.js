@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.6
+// @version      0.7
 // @author       lycloud
 // @match        https://keylol.com/f*
+// @match        https://share.dmhy.org/*
 // @match        https://www.chiphell.com/forum.php?*
 // @match        https://pterclub.com/torrents.php*
 // @match        https://www.beitai.pt/torrents.php*
@@ -21,19 +22,14 @@
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
         "www.chiphell.com": ".s",
+        "share.dmhy.org": ".title > a",
         "pterclub.com": ".torrentname a[title]",
         "www.beitai.pt": ".torrentname a[title]",
         "www.pthome.net": ".torrentname a[title]",
         "pt.btschool.club": ".torrentname a[title]",
     }
 
-    // Gist Read
-    let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
-        headers: { "Authorization": "token " + PA_TOKEN }
-    })
-    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
-
     const color = (index) => {
         for (const element of row[index].closest("tr").children) {
             element.style.background = "#ccc"
@@ -45,6 +41,21 @@
             }
         }
     }
+
+    (() => {
+        if (SITE === "share.dmhy.org") {
+            for (const element of document.querySelectorAll(".tablesorter tr.even")) {
+                element.setAttribute("class", "odd")
+            }
+        }
+    })()
+
+    // Gist Read
+    let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
+        cache: "no-store",
+        headers: { "Authorization": "token " + PA_TOKEN }
+    })
+    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
 
     for (let index = 0; index < row.length; index++) {
         let rowId = row[index].href.match(/\d+/)[0]
@@ -75,5 +86,4 @@
             }, { once: true })
         }
     }
-
 })();
