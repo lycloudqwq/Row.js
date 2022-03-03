@@ -42,6 +42,7 @@
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
+        cache: "no-store",
         headers: { "Authorization": "token " + PA_TOKEN }
     })
     let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
