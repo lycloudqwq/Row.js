@@ -3,6 +3,7 @@
 // @version      0.6
 // @author       lycloud
 // @match        https://keylol.com/f*
+// @match        https://share.dmhy.org*
 // @match        https://www.chiphell.com/forum.php?*
 // @match        https://pterclub.com/torrents.php*
 // @match        https://www.beitai.pt/torrents.php*
@@ -20,6 +21,7 @@
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
+        "share.dmhy.org": ".title > a",
         "www.chiphell.com": ".s",
         "pterclub.com": ".torrentname a[title]",
         "www.beitai.pt": ".torrentname a[title]",
@@ -39,6 +41,14 @@
             }
         }
     }
+
+    (() => {
+        if (SITE === "share.dmhy.org") {
+            for (const element of document.querySelectorAll(".tablesorter tr.even")) {
+                element.setAttribute("class", "odd")
+            }
+        }
+    })()
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
