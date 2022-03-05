@@ -1,15 +1,16 @@
 # Row.js
+Personal use script written in vanilla JavaScript only
 
 ## Function
-- [x] Gist Read
-- [x] Gist Write
+- [x] Fetch API
+- [x] Gist Read/Write
 - [x] remoteContent json
 - [x] querySelector
 - [x] addEventListener
 
 ## Progress
-- [x] Prototype for Keylol
+- [x] Prototype
 - [x] Code cleanup
-- [ ] Adaptation for other sites
-- [ ] Add convenient function
-- [ ] Release
+- [x] Site adaptation
+- [x] Add function
+- [x] Release

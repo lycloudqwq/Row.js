@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.7
+// @version      0.9
 // @author       lycloud
 // @match        https://keylol.com/f*
 // @match        https://share.dmhy.org/*
@@ -14,9 +14,8 @@
 // ==/UserScript==
 
 (async () => {
-
     const PA_TOKEN = "ghp_******"
-    const GIST_ID = "e259cb1aae0b7b129b29f762c42bec82"
+    const GIST_ID = "59a8d548d1029b5b78089154efabd01a"
     const GIST_FILE = "row.json"
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
@@ -68,8 +67,8 @@
                 color(index)
                 // Control the size of remoteContent
                 remoteContent[SITE].push(rowId)
-                if (remoteContent[SITE].length > 400) {
-                    remoteContent[SITE].splice(0, 200)
+                if (remoteContent[SITE].length > 1000) {
+                    remoteContent[SITE].splice(0, 400)
                 }
                 // Gist Write
                 fetch("https://api.github.com/gists/" + GIST_ID, {
