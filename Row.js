@@ -31,23 +31,21 @@
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
     const color = (index) => {
         for (const element of row[index].closest("tr").children) {
-            element.style.background = "#ccc"
+            element.style.background = "#98D98E"
         }
         // PT sites only to color the outer tr
         if (document.querySelector(".torrents")) {
             for (const element of document.querySelectorAll(".torrents>tbody>tr")[index + 1].children) {
-                element.style.background = "#ccc"
+                element.style.background = "#98D98E"
             }
         }
-    }
-
-    (() => {
+        // Disable alternating row colors in dmhy
         if (SITE === "share.dmhy.org") {
             for (const element of document.querySelectorAll(".tablesorter tr.even")) {
                 element.setAttribute("class", "odd")
             }
         }
-    })()
+    }
 
     // Gist Read
     let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
