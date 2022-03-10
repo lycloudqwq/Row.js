@@ -48,11 +48,17 @@
     }
 
     // Gist Read
-    let response = await fetch("https://api.github.com/gists/" + GIST_ID, {
+    let remoteContent = await fetch("https://api.github.com/gists/" + GIST_ID + "/commits?per_page=1", {
         cache: "no-store",
         headers: { "Authorization": "token " + PA_TOKEN }
     })
-    let remoteContent = JSON.parse((await response.json()).files[GIST_FILE].content)
+        .then(response => response.json())
+        .then(data => data[0].version)
+        .then(version => {
+            return await fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + version)
+                .then(response => response.json())
+                .then(remoteContent => { return remoteContent })
+        })
 
     for (let index = 0; index < row.length; index++) {
         let rowId = row[index].href.match(/\d+/)[0]
