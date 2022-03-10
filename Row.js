@@ -55,7 +55,7 @@
         .then(response => response.json())
         .then(data => data[0].version)
         .then(version => {
-            return await fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + version)
+            return fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + version)
                 .then(response => response.json())
                 .then(remoteContent => { return remoteContent })
         })
