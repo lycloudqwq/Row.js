@@ -53,9 +53,8 @@
         headers: { "Authorization": "token " + PA_TOKEN }
     })
         .then(response => response.json())
-        .then(data => data[0].version)
-        .then(version => {
-            return fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + version)
+        .then(data => {
+            return fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + data[0].version)
                 .then(response => response.json())
                 .then(remoteContent => { return remoteContent })
         })
