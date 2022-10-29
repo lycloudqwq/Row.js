@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Row.js
+// @name         Row.js-Gitee
 // @version      0.9
 // @author       lycloud
 // @match        https://keylol.com/f*
@@ -14,8 +14,8 @@
 // ==/UserScript==
 
 (async () => {
-    const PA_TOKEN = "ghp_******"
-    const GIST_ID = "59a8d548d1029b5b78089154efabd01a"
+    const PA_TOKEN = "******"
+    const GIST_ID = "31qp50jf7movgsr2hxciu73"
     const GIST_FILE = "row.json"
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
@@ -48,16 +48,10 @@
     }
 
     // Gist Read
-    let remoteContent = await fetch("https://api.github.com/gists/" + GIST_ID + "/commits?per_page=1", {
-        cache: "no-store",
-        headers: { "Authorization": "token " + PA_TOKEN }
-    })
+    let remoteContent = await fetch("https://gitee.com/api/v5/gists/" + GIST_ID + "?access_token=" + PA_TOKEN)
         .then(response => response.json())
-        .then(data => {
-            return fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + data[0].version)
-                .then(response => response.json())
-                .then(remoteContent => { return remoteContent })
-        })
+        .then(content => content.files[GIST_FILE].content)
+        .then(remoteContent => { return JSON.parse(remoteContent) })
 
     for (let index = 0; index < row.length; index++) {
         let rowId = row[index].href.match(/\d+/)[0]
@@ -74,10 +68,11 @@
                     remoteContent[SITE].splice(0, 400)
                 }
                 // Gist Write
-                fetch("https://api.github.com/gists/" + GIST_ID, {
+                fetch("https://gitee.com/api/v5/gists/" + GIST_ID, {
                     method: "PATCH",
-                    headers: { "Authorization": "token " + PA_TOKEN },
+                    headers: { "Content-Type": "application/json;charset=UTF-8" },
                     body: JSON.stringify({
+                        access_token: PA_TOKEN,
                         files: {
                             [GIST_FILE]: {
                                 content: JSON.stringify(remoteContent)
