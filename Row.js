@@ -48,13 +48,13 @@
     }
 
     // Gist Read
-    let remoteContent = await fetch("https://api.github.com/gists/" + GIST_ID + "/commits?per_page=1", {
+    let remoteContent = await fetch(`https://api.github.com/gists/${GIST_ID}/commits?per_page=1`, {
         cache: "no-store",
         headers: { "Authorization": "token " + PA_TOKEN }
     })
         .then(response => response.json())
         .then(data => {
-            return fetch("https://gist.githubusercontent.com/lycloudqwq/" + GIST_ID + "/raw/" + data[0].version)
+            return fetch(`https://gist.githubusercontent.com/lycloudqwq/${GIST_ID}/raw/${data[0].version}`)
                 .then(response => response.json())
                 .then(remoteContent => { return remoteContent })
         })
@@ -74,7 +74,7 @@
                     remoteContent[SITE].splice(0, 400)
                 }
                 // Gist Write
-                fetch("https://api.github.com/gists/" + GIST_ID, {
+                fetch(`https://api.github.com/gists/${GIST_ID}`, {
                     method: "PATCH",
                     headers: { "Authorization": "token " + PA_TOKEN },
                     body: JSON.stringify({
