@@ -70,7 +70,7 @@
                 // Gist Write
                 fetch("https://gitee.com/api/v5/gists/" + GIST_ID, {
                     method: "PATCH",
-                    headers: { "Content-Type": "application/json;charset=UTF-8" },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         access_token: PA_TOKEN,
                         files: {
