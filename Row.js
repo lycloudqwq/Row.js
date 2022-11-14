@@ -48,7 +48,7 @@
     }
 
     // Gist Read
-    let remoteContent = await fetch("https://gitee.com/api/v5/gists/" + GIST_ID + "?access_token=" + PA_TOKEN)
+    let remoteContent = await fetch(`https://gitee.com/api/v5/gists/${GIST_ID}?access_token=${PA_TOKEN}`)
         .then(response => response.json())
         .then(content => content.files[GIST_FILE].content)
         .then(remoteContent => { return JSON.parse(remoteContent) })
@@ -68,7 +68,7 @@
                     remoteContent[SITE].splice(0, 400)
                 }
                 // Gist Write
-                fetch("https://gitee.com/api/v5/gists/" + GIST_ID, {
+                fetch(`https://gitee.com/api/v5/gists/${GIST_ID}`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
