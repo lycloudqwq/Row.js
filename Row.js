@@ -1,31 +1,21 @@
 // ==UserScript==
 // @name         Row.js
-// @version      0.9
+// @version      0.96
 // @author       lycloud
 // @match        https://keylol.com/f*
-// @match        https://share.dmhy.org/*
 // @match        https://www.chiphell.com/forum.php?*
-// @match        https://pterclub.com/torrents.php*
-// @match        https://www.beitai.pt/torrents.php*
-// @match        https://www.pthome.net/torrents.php*
-// @match        https://pt.btschool.club/torrents.php*
 // @run-at       document-end
 // @description  Personal use script to mark rows as read
 // ==/UserScript==
 
 (async () => {
-    const PA_TOKEN = "ghp_******"
-    const GIST_ID = "59a8d548d1029b5b78089154efabd01a"
-    const GIST_FILE = "row.json"
+    const PA_TOKEN = "github_pat_******"
+    const GIST_ID = "******"
+    const GIST_FILE = "rows.json"
     const SITE = window.location.hostname
     const SITE_SELECTOR = {
         "keylol.com": ".xst",
         "www.chiphell.com": ".s",
-        "share.dmhy.org": ".title > a",
-        "pterclub.com": ".torrentname a[title]",
-        "www.beitai.pt": ".torrentname a[title]",
-        "www.pthome.net": ".torrentname a[title]",
-        "pt.btschool.club": ".torrentname a[title]",
     }
 
     let row = document.querySelectorAll(SITE_SELECTOR[SITE])
