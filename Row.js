@@ -9,10 +9,10 @@
 
 (() => {
     const UNINTERESTED_FORUMS = new Set([
+        "旅游摄影","美食烹饪",
         "华语汉化","游戏互鉴",
         "平台技术问题","平台购物问题","其乐社区问题","资源问题","游戏／成就／汉化问题","软件硬件／其他问题",
         "移动平台","GOG","战网","Windows 商店","杉果","方块游戏平台","腾讯 WeGame",
-        "旅游摄影","美食烹饪",
         "刀塔","明日方舟","动视暴雪"
     ]);
     const UNINTERESTED_AUTHORS = new Set([]);
@@ -70,7 +70,11 @@
             if (!author || !title.closest("th, td")) continue;
             matches.push({ row, title, forumCell, forumName, authorCell, author });
         }
-        matches.sort((a, b) => a.forumName.localeCompare(b.forumName, "zh-CN"));
+        const forumOrder = new Map([...UNINTERESTED_FORUMS].map((name, index) => [name, index]));
+        for (const { forumName } of matches) {
+            if (!forumOrder.has(forumName)) forumOrder.set(forumName, forumOrder.size);
+        }
+        matches.sort((a, b) => forumOrder.get(a.forumName) - forumOrder.get(b.forumName));
 
         const style = document.createElement("style");
         style.textContent = `
@@ -124,7 +128,7 @@
                 pointer-events: none;
                 opacity: 0;
                 transform: translate(-100%, -50%);
-                transition: transform .18s ease, opacity .18s ease, visibility .18s;
+                transition: transform .08s ease-out, opacity .08s ease-out, visibility .08s;
             }
             #row-hover-drawer.is-open .row-drawer-panel {
                 visibility: visible;
