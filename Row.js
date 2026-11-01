@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Row.js_local
 // @namespace   https://github.com/lycloudqwq/Row.js
-// @version     0.97
+// @version     1.0
 // @author      lycloud
 // @include     https://keylol.com/f*
 // @run-at      document-end
@@ -23,15 +23,12 @@
         }
     }
 
-    // Initialize readThreads array and localStorage
-    if (!localStorage.getItem('readThreads')) {
-        localStorage.setItem('readThreads', JSON.stringify([]));
-    }
-    let readThreads = JSON.parse(localStorage.getItem('readThreads') || '[]');
+    // Load saved read threads
+    const readThreads = JSON.parse(localStorage.getItem('readThreads') || '[]');
 
     // Add event listener to unread rows and save read status to localStorage
     for (let index = 0; index < ROWS.length; index++) {
-        let rowId = ROWS[index].href.match(/\d+/)[0];
+        const rowId = ROWS[index].href.match(/\d+/)[0];
         if (readThreads.includes(rowId)) {
             color(index);
         } else {
@@ -50,25 +47,23 @@
 
     function createHoverDrawer() {
         const threadList = document.querySelector("#threadlist");
-        if (!threadList || document.getElementById("row-hover-drawer")) return;
+        if (!threadList) return;
 
         const matches = [];
-        const seenRows = new Set();
-        for (const title of ROWS) {
+        for (const title of threadList.querySelectorAll(".xst")) {
             const row = title.closest("tr");
-            if (!row || !threadList.contains(row) || seenRows.has(row)) continue;
-            seenRows.add(row);
+            const titleCell = title.parentElement;
+            const author = row.querySelector("td.by cite");
+            if (!author) continue;
 
             const cells = Array.from(row.children);
-            const authorCell = cells.find(cell => cell.matches("td.by") && cell.querySelector("cite"));
-            const author = authorCell?.querySelector("cite");
+            const authorCell = author.closest("td");
             const forumCell = cells.find(cell => cell.matches("td.by, td.frm") && !cell.querySelector("cite"));
             const forumName = forumCell.textContent.trim();
-            const authorName = author?.textContent.trim() || "";
+            const authorName = author.textContent.trim();
 
             if (!UNINTERESTED_FORUMS.has(forumName) && !UNINTERESTED_AUTHORS.has(authorName)) continue;
-            if (!author || !title.closest("th, td")) continue;
-            matches.push({ row, title, forumCell, forumName, authorCell, author });
+            matches.push({ row, title, titleCell, forumCell, forumName, authorCell, author });
         }
         const forumOrder = new Map([...UNINTERESTED_FORUMS].map((name, index) => [name, index]));
         for (const { forumName } of matches) {
@@ -186,6 +181,10 @@
         toggle.className = "row-drawer-toggle";
         toggle.textContent = `不感兴趣 [${matches.length}]`;
         toggle.disabled = matches.length === 0;
+        drawer.appendChild(toggle);
+        document.body.appendChild(drawer);
+        if (toggle.disabled) return;
+
         toggle.setAttribute("aria-controls", "row-hover-drawer-panel");
 
         const panel = document.createElement("div");
@@ -194,31 +193,18 @@
         panel.setAttribute("role", "region");
         panel.setAttribute("aria-label", "不感兴趣的帖子");
 
-        const header = document.createElement("div");
-        header.className = "th";
-        const headerTable = document.createElement("table");
-        const headerBody = document.createElement("tbody");
-        const headerRow = document.createElement("tr");
-        for (const [tag, name, className] of [
-            ["th", "标题", "common"],
-            ["td", "版块/群组", "by row-drawer-forum"],
-            ["td", "作者", "by row-drawer-author"],
-        ]) {
-            const cell = document.createElement(tag);
-            cell.className = className;
-            cell.textContent = name;
-            headerRow.appendChild(cell);
-        }
-        headerBody.appendChild(headerRow);
-        headerTable.appendChild(headerBody);
-        header.appendChild(headerTable);
-
-        const content = document.createElement("div");
-        content.className = "bm_c";
-        const table = document.createElement("table");
-        const body = document.createElement("tbody");
-        for (const { row, title, forumCell, forumName, authorCell, author } of matches) {
-            const titleCell = title.closest("th, td");
+        panel.innerHTML = `
+            <div class="th">
+                <table><tbody><tr>
+                    <th class="common">标题</th>
+                    <td class="by row-drawer-forum">版块/群组</td>
+                    <td class="by row-drawer-author">作者</td>
+                </tr></tbody></table>
+            </div>
+            <div class="bm_c"><table><tbody></tbody></table></div>
+        `;
+        const body = panel.querySelector(".bm_c tbody");
+        for (const { row, title, titleCell, forumCell, forumName, authorCell, author } of matches) {
             titleCell.removeAttribute("colspan");
             titleCell.replaceChildren(title);
             title.title = title.textContent.trim();
@@ -232,17 +218,12 @@
             row.replaceChildren(titleCell, forumCell, authorCell);
             body.appendChild(row);
         }
-        table.appendChild(body);
-        content.appendChild(table);
-
-        panel.append(header, content);
-        drawer.append(toggle, panel);
-        document.body.appendChild(drawer);
+        drawer.appendChild(panel);
 
         let hovered = false;
         let pinned = false;
         const update = () => {
-            const open = matches.length > 0 && (hovered || pinned);
+            const open = hovered || pinned;
             drawer.classList.toggle("is-open", open);
             toggle.setAttribute("aria-expanded", String(open));
             toggle.setAttribute("aria-pressed", String(pinned));
