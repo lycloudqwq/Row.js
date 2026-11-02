@@ -93,16 +93,11 @@
                 box-sizing: border-box;
                 width: 36px;
                 height: 132px;
-                margin: 0;
                 padding: 8px 5px;
                 border: 1px solid #d9dfe3;
                 border-radius: 8px;
                 background: oklch(95.6% 0.045 203.388);
                 color: #4e616d;
-                font: inherit;
-                font-size: 12px;
-                line-height: 18px;
-                writing-mode: horizontal-tb;
                 cursor: pointer;
             }
             #row-hover-drawer .row-drawer-label {
@@ -159,8 +154,6 @@
             }
             #row-hover-drawer .bm_c { padding: 0; }
             #row-hover-drawer table {
-                width: 100%;
-                table-layout: fixed;
                 border-spacing: 0;
             }
             #row-hover-drawer th, #row-hover-drawer td {
@@ -180,7 +173,6 @@
             #row-hover-drawer cite > a {
                 display: block;
                 overflow: hidden;
-                white-space: nowrap;
                 text-overflow: ellipsis;
             }
             @media (max-width: 520px) {
@@ -210,6 +202,7 @@
 
         const panel = document.createElement("div");
         panel.className = "row-drawer-panel tl bm bmw";
+
         panel.innerHTML = `
             <div class="th">
                 <table><tbody><tr>
