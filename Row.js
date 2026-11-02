@@ -85,7 +85,11 @@
             #row-hover-drawer .row-drawer-toggle {
                 position: relative;
                 z-index: 2;
-                display: block;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
                 box-sizing: border-box;
                 width: 36px;
                 height: 132px;
@@ -98,13 +102,27 @@
                 font: inherit;
                 font-size: 12px;
                 line-height: 18px;
-                writing-mode: vertical-rl;
+                writing-mode: horizontal-tb;
                 cursor: pointer;
+            }
+            #row-hover-drawer .row-drawer-label {
+                writing-mode: vertical-rl;
+                letter-spacing: 2px;
+            }
+            #row-hover-drawer .row-drawer-divider {
+                width: 16px;
+                border-top: 1px solid currentColor;
+                opacity: .4;
+            }
+            #row-hover-drawer .row-drawer-count {
+                color: #884898;
+                font-family: ui-monospace, Consolas, monospace;
+                white-space: nowrap;
             }
             #row-hover-drawer .row-drawer-toggle:hover {
                 background: oklch(91.7% 0.08 205.041);
             }
-            #row-hover-drawer .row-drawer-toggle[aria-pressed="true"] {
+            #row-hover-drawer .row-drawer-toggle.is-pinned {
                 border-color: #4e616d;
             }
             #row-hover-drawer .row-drawer-panel {
@@ -118,6 +136,7 @@
                 overflow: auto;
                 overscroll-behavior: contain;
                 border: 1px solid #d9dfe3;
+                border-radius: 8px;
                 box-shadow: 3px 3px 12px rgb(0 0 0 / 15%);
                 visibility: hidden;
                 pointer-events: none;
@@ -179,20 +198,18 @@
         const toggle = document.createElement("button");
         toggle.type = "button";
         toggle.className = "row-drawer-toggle";
-        toggle.textContent = `不感兴趣 [${matches.length}]`;
+        toggle.innerHTML = `
+            <span class="row-drawer-label">不感兴趣</span>
+            <span class="row-drawer-divider"></span>
+            <span class="row-drawer-count">${matches.length}</span>
+        `;
         toggle.disabled = matches.length === 0;
         drawer.appendChild(toggle);
         document.body.appendChild(drawer);
         if (toggle.disabled) return;
 
-        toggle.setAttribute("aria-controls", "row-hover-drawer-panel");
-
         const panel = document.createElement("div");
-        panel.id = "row-hover-drawer-panel";
         panel.className = "row-drawer-panel tl bm bmw";
-        panel.setAttribute("role", "region");
-        panel.setAttribute("aria-label", "不感兴趣的帖子");
-
         panel.innerHTML = `
             <div class="th">
                 <table><tbody><tr>
@@ -223,16 +240,12 @@
         let hovered = false;
         let pinned = false;
         const update = () => {
-            const open = hovered || pinned;
-            drawer.classList.toggle("is-open", open);
-            toggle.setAttribute("aria-expanded", String(open));
-            toggle.setAttribute("aria-pressed", String(pinned));
-            panel.setAttribute("aria-hidden", String(!open));
+            drawer.classList.toggle("is-open", hovered || pinned);
+            toggle.classList.toggle("is-pinned", pinned);
         };
         drawer.addEventListener("mouseenter", () => { hovered = true; update(); });
         drawer.addEventListener("mouseleave", () => { hovered = false; update(); });
         toggle.addEventListener("click", () => { pinned = !pinned; update(); });
-        update();
     }
 
 })();
