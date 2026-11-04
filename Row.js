@@ -72,6 +72,9 @@
         const style = document.createElement("style");
         style.textContent = `
             tr.row-read > * { background: #98D98E !important; }
+            #threadlist.row-hide-uninterested tr.row-uninterested {
+                display: none;
+            }
             #row-hover-drawer {
                 position: fixed;
                 left: 0;
@@ -174,6 +177,34 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+            #row-visibility-toggle {
+                position: fixed;
+                left: 2px;
+                top: calc(50% + 74px);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border: 1px solid #d9dfe3;
+                border-radius: 50%;
+                background: oklch(95% 0.052 163.051);
+                font-size: 16px;
+                line-height: 1;
+                cursor: pointer;
+            }
+            #row-visibility-toggle:not(.is-hidden):hover {
+                background: oklch(90.5% 0.093 164.15);
+            }
+            #row-visibility-toggle.is-hidden {
+                background: oklch(87.2% 0.01 258.338);
+            }
+            #row-visibility-toggle.is-hidden:hover {
+                background: oklch(70.7% 0.022 261.325);
+            }
             @media (max-width: 520px) {
                 #row-hover-drawer .row-drawer-forum { width: 76px; }
                 #row-hover-drawer .row-drawer-author { width: 84px; }
@@ -214,17 +245,27 @@
         `;
         const body = panel.querySelector(".bm_c tbody");
         for (const { row, title, titleCell, forumCell, forumName, authorCell, author } of matches) {
-            titleCell.replaceChildren(title);
-            title.title = title.textContent.trim();
+            const drawerTitle = title.cloneNode(true);
+            drawerTitle.title = title.textContent.trim();
+            const drawerTitleCell = titleCell.cloneNode(false);
+            drawerTitleCell.append(drawerTitle);
 
-            forumCell.classList.add("by", "row-drawer-forum");
-            forumCell.title = forumName;
-            authorCell.classList.add("row-drawer-author");
-            authorCell.replaceChildren(author);
-            authorCell.title = author.textContent.trim();
+            const drawerForumCell = forumCell.cloneNode(true);
+            drawerForumCell.classList.add("by", "row-drawer-forum");
+            drawerForumCell.title = forumName;
 
-            row.replaceChildren(titleCell, forumCell, authorCell);
-            body.appendChild(row);
+            const drawerAuthorCell = authorCell.cloneNode(false);
+            drawerAuthorCell.classList.add("row-drawer-author");
+            drawerAuthorCell.append(author.cloneNode(true));
+            drawerAuthorCell.title = author.textContent.trim();
+
+            const drawerRow = row.cloneNode(false);
+            drawerRow.append(drawerTitleCell, drawerForumCell, drawerAuthorCell);
+            body.appendChild(drawerRow);
+            row.classList.add("row-uninterested");
+
+            title.addEventListener("mousedown", () => drawerRow.classList.add("row-read"), { once: true });
+            drawerTitle.addEventListener("mousedown", () => title.dispatchEvent(new MouseEvent("mousedown")), { once: true });
         }
         drawer.appendChild(panel);
 
@@ -237,6 +278,23 @@
         drawer.addEventListener("mouseenter", () => { hovered = true; update(); });
         drawer.addEventListener("mouseleave", () => { hovered = false; update(); });
         toggle.addEventListener("click", () => { pinned = !pinned; update(); });
+
+        const visibilityToggle = document.createElement("button");
+        visibilityToggle.type = "button";
+        visibilityToggle.id = "row-visibility-toggle";
+        let listHidden = localStorage.getItem("hideUninterested") !== "false";
+        const updateList = () => {
+            threadList.classList.toggle("row-hide-uninterested", listHidden);
+            visibilityToggle.classList.toggle("is-hidden", listHidden);
+            visibilityToggle.textContent = listHidden ? "" : "✅";
+        };
+        visibilityToggle.addEventListener("click", () => {
+            listHidden = !listHidden;
+            localStorage.setItem("hideUninterested", String(listHidden));
+            updateList();
+        });
+        updateList();
+        document.body.appendChild(visibilityToggle);
     }
 
 })();
