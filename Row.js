@@ -18,9 +18,7 @@
     const UNINTERESTED_AUTHORS = new Set([]);
     const ROWS = document.querySelectorAll(".xst");
     const color = (index) => {
-        for (const element of ROWS[index].closest("tr").children) {
-            element.style.background = "#98D98E";
-        }
+        ROWS[index].closest("tr").classList.add("row-read");
     }
 
     // Load saved read threads
@@ -50,7 +48,7 @@
         if (!threadList) return;
 
         const matches = [];
-        for (const title of threadList.querySelectorAll(".xst")) {
+        for (const title of ROWS) {
             const row = title.closest("tr");
             const titleCell = title.parentElement;
             const author = row.querySelector("td.by cite");
@@ -73,6 +71,7 @@
 
         const style = document.createElement("style");
         style.textContent = `
+            tr.row-read > * { background: #98D98E !important; }
             #row-hover-drawer {
                 position: fixed;
                 left: 0;
@@ -215,7 +214,6 @@
         `;
         const body = panel.querySelector(".bm_c tbody");
         for (const { row, title, titleCell, forumCell, forumName, authorCell, author } of matches) {
-            titleCell.removeAttribute("colspan");
             titleCell.replaceChildren(title);
             title.title = title.textContent.trim();
 
