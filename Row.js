@@ -191,6 +191,16 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                 }
+                .icn {
+                    padding: 0 !important;
+                    text-align: center;
+
+                    > a {
+                        display: block;
+                        padding-block: 6px;
+                        line-height: 1;
+                    }
+                }
                 .row-drawer-forum { width: 100px; }
                 .row-drawer-author { width: 112px; }
                 .xst,
@@ -265,6 +275,7 @@
         panel.innerHTML = `
             <div class="th">
                 <table><tbody><tr>
+                    <td class="icn"></td>
                     <th class="common">标题</th>
                     <td class="by row-drawer-forum">版块/群组</td>
                     <td class="by row-drawer-author">作者</td>
@@ -289,7 +300,7 @@
             drawerAuthorCell.title = author.textContent.trim();
 
             const drawerRow = row.cloneNode(false);
-            drawerRow.append(drawerTitleCell, drawerForumCell, drawerAuthorCell);
+            drawerRow.append(row.querySelector(".icn").cloneNode(true), drawerTitleCell, drawerForumCell, drawerAuthorCell);
             body.appendChild(drawerRow);
             row.classList.add("row-uninterested");
 
